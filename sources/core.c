@@ -12,16 +12,24 @@
 
 #include "../so_long.h"
 
-static void error_die(char *error_code)
+static void	free_map(char **map)
 {
-	if (!ft_strncmp(error_code, ".xpm->image", 1024))
-	{
-		ft_printf("%sError.\nFailed to convert .xpm file to an image.\n%s", RED, NC);
-		exit(0);
-	}
+	if (!map)
+		return ;
+	while (*map)
+		free(*(map++));
+	free(map);
 }
 
-static char	**get_map(char *filename)
+void error_die(char *error_code, s_game_data *g_d)
+{
+	ft_printf("%s%s%s", RED, error_code, NC);
+	if (g_d)
+		free_map(g_d->map);
+	exit(0);
+}
+
+static char	**get_map(char *filename, s_game_data *g_d)
 {
 	int		fd;
 	char	*line;
@@ -29,6 +37,8 @@ static char	**get_map(char *filename)
 
 	map = NULL;
 	fd = open(filename, O_RDONLY);
+	if (fd == -1)
+		error_die(INVALID_TERM_CALL, g_d);
 	line = get_next_line(fd);
 	while (line)
 	{
@@ -40,42 +50,111 @@ static char	**get_map(char *filename)
 	return (ft_split(map, '\n'));
 }
 
-static void	draw_map(char **map)
+static void	draw_map(s_game_data *g_d)
 {
 	int	i;
 	int	j;
 
 	i = 0;
-	while (map[i])
+	while (g_d->map[i])
 	{
 		j = 0;
-		while (map[i][j])
+		while (g_d->map[i][j])
 		{
-			if (map[i][j] == '1')
-
+			if (g_d->map[i][j] == '1')
+				mlx_put_image_to_window(g_d->mlx, g_d->window,
+										g_d->images->wall,
+										j * g_d->img_width, i * g_d->img_height);
+			else if (g_d->map[i][j] == '0')
+				mlx_put_image_to_window(g_d->mlx, g_d->window,
+										g_d->images->empty,
+										j * g_d->img_width, i * g_d->img_height);
+			else if (g_d->map[i][j] == 'E')
+				mlx_put_image_to_window(g_d->mlx, g_d->window,
+										g_d->images->exit,
+										j * g_d->img_width, i * g_d->img_height);
+			else if (g_d->map[i][j] == 'P')
+			{
+				mlx_put_image_to_window(g_d->mlx, g_d->window,
+										g_d->images->empty,
+										j * g_d->img_width, i * g_d->img_height);
+				mlx_put_image_to_window(g_d->mlx, g_d->window,
+										g_d->images->player,
+										j * g_d->img_width, i * g_d->img_height);
+			}
+			else if (g_d->map[i][j] == 'C')
+			{
+				mlx_put_image_to_window(g_d->mlx, g_d->window,
+										g_d->images->empty,
+										j * g_d->img_width, i * g_d->img_height);
+				mlx_put_image_to_window(g_d->mlx, g_d->window,
+										g_d->images->key,
+										j * g_d->img_width, i * g_d->img_height);
+			}
 			j++;
 		}
 		i++;
 	}
 }
 
-int main()
+static void	get_map_dims(s_game_data *g_d)
 {
-	void	*mlx;
-	void	*window;
-	void	*img;
-	int		img_width;
-	int 	img_heigth;
 	char	**map;
+	int		rows;
+	int		cols;
 
-	map = get_map("maps/little_map.ber");
-	draw_map(map);
-	mlx = mlx_init();
-	window = mlx_new_window(mlx, 1920, 1024, "so_long");
-	if (!(img = mlx_xpm_file_to_image(mlx, "assets/Bacon_64.xpm", &img_width, &img_heigth)))
-		error_die(".xpm->image");
-	mlx_put_image_to_window(mlx, window, img, 500, 500);
-	mlx_string_put(mlx, window, 30, 30, 0xFF00FFFF, "KEKS?");
-	mlx_loop(mlx);
+	map = g_d->map;
+	rows = 0;
+	while (map[rows])
+	{
+		cols = 0;
+		while (map[rows][cols])
+			cols++;
+		rows++;
+	}
+	g_d->rows = rows;
+	g_d->cols = cols;
+}
+
+static void	init_structs(char *map_filename, s_game_data *g_d, s_sprites *images)
+{
+	char	*map;
+
+	g_d->map = NULL;
+	map = ft_strjoin("maps/", map_filename);
+	g_d->mlx = mlx_init();
+	g_d->map = get_map(map, g_d);
+	free(map);
+	validate_map(g_d);
+	get_map_dims(g_d);
+	g_d->window = mlx_new_window(g_d->mlx, g_d->cols * 64, g_d->rows * 64, "so_long");
+	if (!(images->wall = mlx_xpm_file_to_image(g_d->mlx, "assets/wall.xpm",
+											   &(g_d->img_width), &(g_d->img_height))))
+		error_die(XPM_CONVERT_FAIL_WALL, g_d);
+	if (!(images->empty = mlx_xpm_file_to_image(g_d->mlx, "assets/empty.xpm",
+												&(g_d->img_width), &(g_d->img_height))))
+		error_die(XPM_CONVERT_FAIL_EMPTY, g_d);
+	if (!(images->player = mlx_xpm_file_to_image(g_d->mlx, "assets/player.xpm",
+												&(g_d->img_width), &(g_d->img_height))))
+		error_die(XPM_CONVERT_FAIL_PLAYER, g_d);
+	if (!(images->exit = mlx_xpm_file_to_image(g_d->mlx, "assets/exit.xpm",
+												&(g_d->img_width), &(g_d->img_height))))
+		error_die(XPM_CONVERT_FAIL_EXIT, g_d);
+	if (!(images->key = mlx_xpm_file_to_image(g_d->mlx, "assets/key.xpm",
+												&(g_d->img_width), &(g_d->img_height))))
+		error_die(XPM_CONVERT_FAIL_KEY, g_d);
+	g_d->images = images;
+}
+
+int main(int argc, char **argv)
+{
+	s_game_data	g_d;
+	s_sprites	images;
+
+	if (argc != 2)
+		error_die(INVALID_TERM_CALL, NULL);
+	init_structs(argv[1], &g_d, &images);
+	draw_map(&g_d);
+	mlx_loop(g_d.mlx);
 	return (0);
 }

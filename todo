@@ -1,0 +1,6 @@
+1) add validation of the map
+V 2) add expandable error header wich will contain all the error_code<->error_message macroses
+    so that I could call error() func and just send a error code in it.
+3) swap to the 32x32 images
+4) create good images!
+5) put all libs to libs folder to orginize project.
