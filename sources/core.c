@@ -12,20 +12,29 @@
 
 #include "../so_long.h"
 
-static void	free_map(char **map)
+static void	free_map(char ***map)
 {
-	if (!map)
-		return ;
-	while (*map)
-		free(*(map++));
-	free(map);
-}
+	int	i;
 
+	i = 0;
+	while ((*map)[i])
+		free((*map)[i++]);
+	free(*map);
+}
+/*
+static void	free_sprites(s_game_data *g_d)
+{
+
+}
+*/
 void error_die(char *error_code, s_game_data *g_d)
 {
 	ft_printf("%s%s%s", RED, error_code, NC);
 	if (g_d)
-		free_map(g_d->map);
+	{
+		free_map(&g_d->map);
+		mlx_destroy_window(g_d->mlx, g_d->window);
+	}
 	exit(0);
 }
 
@@ -34,6 +43,7 @@ static char	**get_map(char *filename, s_game_data *g_d)
 	int		fd;
 	char	*line;
 	char	*map;
+	char	**ans;
 
 	map = NULL;
 	fd = open(filename, O_RDONLY);
@@ -47,7 +57,10 @@ static char	**get_map(char *filename, s_game_data *g_d)
 		line = get_next_line(fd);
 	}
 	close(fd);
-	return (ft_split(map, '\n'));
+	free(line);
+	ans = ft_split(map, '\n');
+	free(map);
+	return (ans);
 }
 
 static void	draw_map(s_game_data *g_d)
@@ -118,13 +131,13 @@ static void	get_map_dims(s_game_data *g_d)
 
 static void	init_structs(char *map_filename, s_game_data *g_d, s_sprites *images)
 {
-	char	*map;
+	char	*map_name;
 
 	g_d->map = NULL;
-	map = ft_strjoin("maps/", map_filename);
+	map_name = ft_strjoin("maps/", map_filename);
 	g_d->mlx = mlx_init();
-	g_d->map = get_map(map, g_d);
-	free(map);
+	g_d->map = get_map(map_name, g_d);
+	free(map_name);
 	validate_map(g_d);
 	get_map_dims(g_d);
 	g_d->window = mlx_new_window(g_d->mlx, g_d->cols * 64, g_d->rows * 64, "so_long");

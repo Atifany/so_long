@@ -17,8 +17,8 @@ static void	*clean_arr(char ***arr)
 	int	i;
 
 	i = 0;
-	while (*arr[i] != NULL)
-		free(*arr[i++]);
+	while ((*arr)[i] != NULL)
+		free((*arr)[i++]);
 	free(*arr);
 	return (NULL);
 }
