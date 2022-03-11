@@ -1,35 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   so_long.h                                          :+:      :+:    :+:   */
+/*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: atifany <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/09 17:36:12 by atifany           #+#    #+#             */
-/*   Updated: 2022/03/09 17:36:13 by atifany          ###   ########.fr       */
+/*   Created: 2021/11/11 16:02:07 by atifany           #+#    #+#             */
+/*   Updated: 2021/11/11 16:02:08 by atifany          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SO_LONG_H
-# define SO_LONG_H
+#ifndef GET_NEXT_LINE_H
+# define GET_NEXT_LINE_H
+# include <unistd.h>
+# include <stdlib.h>
+# define BUFFER_SIZE 128
 
-# include "get_next_line.h"
-# include "colors.h"
-# include "mlx/mlx.h"
-# include "libft/libft.h"
-# include "ft_printf/ft_printf.h"
-# define INT_MAX 2147483647
-# define INT_MIN -2147483648
-# define TRUE 1
-# define FALSE 0
-
-typedef struct t_img
-{
-	void	*img;
-	char	*addr;
-	int		bit_per_pixel;
-	int		line_len;
-	int		endian;
-} s_img;
+char	*join(char **ans, char *buf, size_t count);
+size_t	gnl_ft_strlen(char *s);
+char	*get_next_line(int fd);
 
 #endif
