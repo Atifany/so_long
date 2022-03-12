@@ -2,7 +2,8 @@
 SO_LONG = so_long
 
 # sources
-_SRC = *.c
+_SRC = core.c cleaner.c validation.c map_handle.c \
+	   get_next_line.c get_next_line_utils.c
 SRC_DIR = sources
 SRC = $(_SRC:%=$(SRC_DIR)/%)
 

@@ -58,4 +58,9 @@ typedef struct t_game_data
 void	validate_map(s_game_data *g_d);
 void	error_die(char *error_code, s_game_data *g_d);
 
+// map_handle
+char	**get_map(char *filename, s_game_data *g_d);
+void	draw_map(s_game_data *g_d);
+void	get_map_dims(s_game_data *g_d);
+
 #endif
