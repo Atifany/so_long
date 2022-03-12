@@ -5,3 +5,7 @@ V 2) add expandable error header wich will contain all the error_code<->error_me
 4) create good images!
 5) put all libs to libs folder to orginize project.
 6) check all the leaks possible
+7) add a* algorithm for enemies.
+8) add redraw(g_d) func so that I could easily redraw a certain tile. check point9 below.
+9) access map via char **map to make walls unwalkable and player moveable.
+    also modify map variable to move objects on a map by moving them in char **map.

@@ -10,12 +10,12 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../so_long.h"
+#include "../so_long.h"
 
 static void	check_symbols_and_len(s_game_data *g_d)
 {
 	char	*alphabet;
-	int 	row;
+	int		row;
 	int		col;
 	int		col_save;
 

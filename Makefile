@@ -11,11 +11,11 @@ HEADS = so_long.h
 
 # libraries
 MLX = libmlx.a
-MLX_DIR = mlx
+MLX_DIR = libs/mlx
 LIBFT = libft.a
-LIBFT_DIR = libft
+LIBFT_DIR = libs/libft
 FT_PRINTF = ft_printf.a
-FT_PRINTF_DIR = ft_printf
+FT_PRINTF_DIR = libs/ft_printf
 LIBS = $(MLX:%=$(MLX_DIR)/%) $(LIBFT:%=$(LIBFT_DIR)/%) $(FT_PRINTF:%=$(FT_PRINTF_DIR)/%)
 
 # Make commands

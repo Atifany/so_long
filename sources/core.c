@@ -12,32 +12,6 @@
 
 #include "../so_long.h"
 
-static void	free_map(char ***map)
-{
-	int	i;
-
-	i = 0;
-	while ((*map)[i])
-		free((*map)[i++]);
-	free(*map);
-}
-/*
-static void	free_sprites(s_game_data *g_d)
-{
-
-}
-*/
-void error_die(char *error_code, s_game_data *g_d)
-{
-	ft_printf("%s%s%s", RED, error_code, NC);
-	if (g_d)
-	{
-		free_map(&g_d->map);
-		mlx_destroy_window(g_d->mlx, g_d->window);
-	}
-	exit(0);
-}
-
 static char	**get_map(char *filename, s_game_data *g_d)
 {
 	int		fd;
@@ -56,8 +30,8 @@ static char	**get_map(char *filename, s_game_data *g_d)
 		free(line);
 		line = get_next_line(fd);
 	}
-	close(fd);
 	free(line);
+	close(fd);
 	ans = ft_split(map, '\n');
 	free(map);
 	return (ans);
@@ -76,33 +50,33 @@ static void	draw_map(s_game_data *g_d)
 		{
 			if (g_d->map[i][j] == '1')
 				mlx_put_image_to_window(g_d->mlx, g_d->window,
-										g_d->images->wall,
-										j * g_d->img_width, i * g_d->img_height);
+					g_d->images->wall,
+					j * g_d->img_width, i * g_d->img_height);
 			else if (g_d->map[i][j] == '0')
 				mlx_put_image_to_window(g_d->mlx, g_d->window,
-										g_d->images->empty,
-										j * g_d->img_width, i * g_d->img_height);
+					g_d->images->empty,
+					j * g_d->img_width, i * g_d->img_height);
 			else if (g_d->map[i][j] == 'E')
 				mlx_put_image_to_window(g_d->mlx, g_d->window,
-										g_d->images->exit,
-										j * g_d->img_width, i * g_d->img_height);
+					g_d->images->exit,
+					j * g_d->img_width, i * g_d->img_height);
 			else if (g_d->map[i][j] == 'P')
 			{
 				mlx_put_image_to_window(g_d->mlx, g_d->window,
-										g_d->images->empty,
-										j * g_d->img_width, i * g_d->img_height);
+					g_d->images->empty,
+					j * g_d->img_width, i * g_d->img_height);
 				mlx_put_image_to_window(g_d->mlx, g_d->window,
-										g_d->images->player,
-										j * g_d->img_width, i * g_d->img_height);
+					g_d->images->player,
+					j * g_d->img_width, i * g_d->img_height);
 			}
 			else if (g_d->map[i][j] == 'C')
 			{
 				mlx_put_image_to_window(g_d->mlx, g_d->window,
-										g_d->images->empty,
-										j * g_d->img_width, i * g_d->img_height);
+					g_d->images->empty,
+					j * g_d->img_width, i * g_d->img_height);
 				mlx_put_image_to_window(g_d->mlx, g_d->window,
-										g_d->images->key,
-										j * g_d->img_width, i * g_d->img_height);
+					g_d->images->key,
+					j * g_d->img_width, i * g_d->img_height);
 			}
 			j++;
 		}
@@ -129,18 +103,36 @@ static void	get_map_dims(s_game_data *g_d)
 	g_d->cols = cols;
 }
 
-static void	init_structs(char *map_filename, s_game_data *g_d, s_sprites *images)
+static void	null_structs(s_game_data *g_d, s_sprites *images)
 {
-	char	*map_name;
-
+	images->wall = NULL;
+	images->empty = NULL;
+	images->player = NULL;
+	images->key = NULL;
+	images->exit = NULL;
+	g_d->mlx = NULL;
+	g_d->window = NULL;
+	g_d->images = images;
+	g_d->rows = 0;
+	g_d->cols = 0;
+	g_d->img_height = 0;
+	g_d->img_width = 0;
 	g_d->map = NULL;
-	map_name = ft_strjoin("maps/", map_filename);
-	g_d->mlx = mlx_init();
-	g_d->map = get_map(map_name, g_d);
-	free(map_name);
+}
+
+static void	init_structs(char *map_name, s_game_data *g_d, s_sprites *images)
+{
+	char	*map;
+
+	null_structs(g_d, images);
+	map = ft_strjoin("maps/", map_name);
+	g_d->map = get_map(map, g_d);
+	free(map);
 	validate_map(g_d);
 	get_map_dims(g_d);
-	g_d->window = mlx_new_window(g_d->mlx, g_d->cols * 64, g_d->rows * 64, "so_long");
+	g_d->mlx = mlx_init();
+	g_d->window = mlx_new_window(g_d->mlx,
+			g_d->cols * 64, g_d->rows * 64, "so_long");
 	if (!(images->wall = mlx_xpm_file_to_image(g_d->mlx, "assets/wall.xpm",
 											   &(g_d->img_width), &(g_d->img_height))))
 		error_die(XPM_CONVERT_FAIL_WALL, g_d);
@@ -159,7 +151,15 @@ static void	init_structs(char *map_filename, s_game_data *g_d, s_sprites *images
 	g_d->images = images;
 }
 
-int main(int argc, char **argv)
+static int	key_hook(int keycode, void *g_d)
+{
+	if (keycode == ESC)
+		error_die(ESC_PRESSED, g_d);
+	// add proper dying from pressing 'x' on a window
+	return (0);
+}
+
+int	main(int argc, char **argv)
 {
 	s_game_data	g_d;
 	s_sprites	images;
@@ -168,6 +168,7 @@ int main(int argc, char **argv)
 		error_die(INVALID_TERM_CALL, NULL);
 	init_structs(argv[1], &g_d, &images);
 	draw_map(&g_d);
+	mlx_key_hook(g_d.window, key_hook, &g_d);
 	mlx_loop(g_d.mlx);
 	return (0);
 }
