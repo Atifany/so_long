@@ -14,6 +14,8 @@
 # define ERROR_CODES_H
 
 # define ESC_PRESSED "Exit program on ESC pressed.\n"
+# define EXIT_PRESSED "Exit program on X pressed.\n"
+# define WIN_GAME "You won!\n"
 # define XPM_CONVERT_FAIL_WALL "Error:\nMissing sprite asset for [WALL]\n"
 # define XPM_CONVERT_FAIL_EMPTY "Error:\nMissing sprite asset for [EMPTY]\n"
 # define XPM_CONVERT_FAIL_PLAYER "Error:\nMissing sprite asset for [PLAYER]\n"
@@ -21,7 +23,7 @@
 # define XPM_CONVERT_FAIL_EXIT "Error:\nMissing sprite asset for [EXIT]\n"
 # define INVALID_MAP_SYMBOLS "Error:\nInvalid map passed as an argumaent\nThere are unexpected symbols on the map!\n"
 # define INVALID_MAP_LINES "Error:\nInvalid map passed as an argumaent\nMap isn't rectangular!\n"
-# define INVALID_MAP_DUPLICATE "Error:\nInvalid map passed as an argumaent.\nThere are two players!\n"
+# define INVALID_MAP_DUPLICATE "Error:\nInvalid map passed as an argumaent.\nThere are two players or exits!\n"
 # define INVALID_TERM_CALL "Error:\nInvalid filename passed as an argument.\nUsage: ./so_long [map_filename.ber]\nMap file has to be in a maps folder!\n"
 
 

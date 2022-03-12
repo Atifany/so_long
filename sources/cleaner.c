@@ -41,7 +41,7 @@ static void	free_sprites(s_game_data *g_d)
 	}
 }
 
-void	error_die(char *error_code, s_game_data *g_d)
+void	error_die(char *error_code, char *color, s_game_data *g_d)
 {
 	if (g_d)
 	{
@@ -50,6 +50,6 @@ void	error_die(char *error_code, s_game_data *g_d)
 		if (g_d->window)
 			mlx_destroy_window(g_d->mlx, g_d->window);
 	}
-	ft_printf("%s%s%s", RED, error_code, NC);
+	ft_printf("%s%s%s", color, error_code, NC);
 	exit(0);
 }

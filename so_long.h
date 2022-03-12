@@ -51,12 +51,15 @@ typedef struct t_game_data
 	int			cols;
 	int			img_width;
 	int			img_height;
+	int			player_x;
+	int			player_y;
+	int			collectibles;
 	s_sprites	*images;
 } s_game_data;
 
 // Utils
 void	validate_map(s_game_data *g_d);
-void	error_die(char *error_code, s_game_data *g_d);
+void	error_die(char *error_code, char *color, s_game_data *g_d);
 
 // map_handle
 char	**get_map(char *filename, s_game_data *g_d);

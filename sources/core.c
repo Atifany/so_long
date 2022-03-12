@@ -26,6 +26,9 @@ static void	null_structs(s_game_data *g_d, s_sprites *images)
 	g_d->cols = 0;
 	g_d->img_height = 0;
 	g_d->img_width = 0;
+	g_d->player_x = 0;
+	g_d->player_y = 0;
+	g_d->collectibles = 0;
 	g_d->map = NULL;
 }
 
@@ -44,27 +47,58 @@ static void	init_structs(char *map_name, s_game_data *g_d, s_sprites *images)
 			g_d->cols * 64, g_d->rows * 64, "so_long");
 	if (!(images->wall = mlx_xpm_file_to_image(g_d->mlx, "assets/wall.xpm",
 											   &(g_d->img_width), &(g_d->img_height))))
-		error_die(XPM_CONVERT_FAIL_WALL, g_d);
+		error_die(XPM_CONVERT_FAIL_WALL, RED, g_d);
 	if (!(images->empty = mlx_xpm_file_to_image(g_d->mlx, "assets/empty.xpm",
 												&(g_d->img_width), &(g_d->img_height))))
-		error_die(XPM_CONVERT_FAIL_EMPTY, g_d);
+		error_die(XPM_CONVERT_FAIL_EMPTY, RED, g_d);
 	if (!(images->player = mlx_xpm_file_to_image(g_d->mlx, "assets/player.xpm",
 												&(g_d->img_width), &(g_d->img_height))))
-		error_die(XPM_CONVERT_FAIL_PLAYER, g_d);
+		error_die(XPM_CONVERT_FAIL_PLAYER, RED, g_d);
 	if (!(images->exit = mlx_xpm_file_to_image(g_d->mlx, "assets/exit.xpm",
 												&(g_d->img_width), &(g_d->img_height))))
-		error_die(XPM_CONVERT_FAIL_EXIT, g_d);
+		error_die(XPM_CONVERT_FAIL_EXIT, RED, g_d);
 	if (!(images->key = mlx_xpm_file_to_image(g_d->mlx, "assets/key.xpm",
 												&(g_d->img_width), &(g_d->img_height))))
-		error_die(XPM_CONVERT_FAIL_KEY, g_d);
+		error_die(XPM_CONVERT_FAIL_KEY, RED, g_d);
 	g_d->images = images;
 }
 
-static int	key_hook(int keycode, void *g_d)
+static void	move(s_game_data *g_d, int shift_x, int shift_y)
+{
+	if (g_d->map[g_d->player_y + shift_y][g_d->player_x + shift_x] == '1')
+		return ;
+	else
+	{
+		if (g_d->map[g_d->player_y + shift_y][g_d->player_x + shift_x] == 'C')
+			g_d->collectibles--;
+		if (g_d->map[g_d->player_y + shift_y][g_d->player_x + shift_x] == 'E' && g_d->collectibles != 0)
+			return ;
+		else if (g_d->map[g_d->player_y + shift_y][g_d->player_x + shift_x] == 'E' && g_d->collectibles == 0)
+			error_die(WIN_GAME, GRN, g_d);
+		g_d->map[g_d->player_y + shift_y][g_d->player_x + shift_x] = 'P';
+		g_d->map[g_d->player_y][g_d->player_x] = '0';
+	}
+	draw_map(g_d);
+}
+
+static int	key_hook(int keycode, s_game_data *g_d)
 {
 	if (keycode == ESC)
-		error_die(ESC_PRESSED, g_d);
-	// add proper dying from pressing 'x' on a window
+		error_die(ESC_PRESSED, GRN, g_d);
+	if (keycode == W)
+		move(g_d, 0, -1);
+	if (keycode == A)
+		move(g_d, -1, 0);
+	if (keycode == S)
+		move(g_d, 0, 1);
+	if (keycode == D)
+		move(g_d, 1, 0);
+	return (0);
+}
+
+static int	die_hook(void *g_d)
+{
+	error_die(EXIT_PRESSED, GRN, g_d);
 	return (0);
 }
 
@@ -74,10 +108,11 @@ int	main(int argc, char **argv)
 	s_sprites	images;
 
 	if (argc != 2)
-		error_die(INVALID_TERM_CALL, NULL);
+		error_die(INVALID_TERM_CALL, RED, NULL);
 	init_structs(argv[1], &g_d, &images);
 	draw_map(&g_d);
 	mlx_key_hook(g_d.window, key_hook, &g_d);
+	mlx_hook(g_d.window, 17, 0L, die_hook, &g_d);
 	mlx_loop(g_d.mlx);
 	return (0);
 }

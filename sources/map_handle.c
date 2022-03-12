@@ -22,7 +22,7 @@ char	**get_map(char *filename, s_game_data *g_d)
 	map = NULL;
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)
-		error_die(INVALID_TERM_CALL, g_d);
+		error_die(INVALID_TERM_CALL, RED, g_d);
 	line = get_next_line(fd);
 	while (line)
 	{
@@ -62,6 +62,8 @@ void	draw_map(s_game_data *g_d)
 										j * g_d->img_width, i * g_d->img_height);
 			else if (g_d->map[i][j] == 'P')
 			{
+				g_d->player_x = j;
+				g_d->player_y = i;
 				mlx_put_image_to_window(g_d->mlx, g_d->window,
 										g_d->images->empty,
 										j * g_d->img_width, i * g_d->img_height);
