@@ -65,6 +65,8 @@ static void	init_structs(char *map_name, s_game_data *g_d, s_sprites *images)
 
 static void	move(s_game_data *g_d, int shift_x, int shift_y)
 {
+	static int movements = 0;
+
 	if (g_d->map[g_d->player_y + shift_y][g_d->player_x + shift_x] == '1')
 		return ;
 	else
@@ -79,6 +81,7 @@ static void	move(s_game_data *g_d, int shift_x, int shift_y)
 		g_d->map[g_d->player_y][g_d->player_x] = '0';
 	}
 	draw_map(g_d);
+	ft_printf("%sMovements: %d%s\n", YEL, movements++, NC);
 }
 
 static int	key_hook(int keycode, s_game_data *g_d)

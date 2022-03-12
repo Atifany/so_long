@@ -10,3 +10,4 @@ V 8) add redraw(g_d) func so that I could easily redraw a certain tile. check po
 V 9) access map via char **map to make walls unwalkable and player moveable.
     also modify map variable to move objects on a map by moving them in char **map.
 10) clear the code. I mean get rid of g_d->smth everywhere! use local variable, they don't bite!
+11) also norme it!
