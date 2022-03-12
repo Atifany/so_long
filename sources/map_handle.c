@@ -26,7 +26,7 @@ char	**get_map(char *filename, s_game_data *g_d)
 	line = get_next_line(fd);
 	while (line)
 	{
-		map = ft_strjoin(map, line);
+		map = join(&map, line, ft_strlen(line));
 		free(line);
 		line = get_next_line(fd);
 	}
