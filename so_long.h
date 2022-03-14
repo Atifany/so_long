@@ -34,7 +34,8 @@ typedef struct t_sprites
 	void	*empty;
 	void	*wall;
 	void	*exit;
-	void	*player;
+	void	*player_1;
+	void	*player_2;
 	void	*key;
 	//void	*wall_left;
 	//void	*wall_right;

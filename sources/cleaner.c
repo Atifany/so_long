@@ -30,8 +30,10 @@ static void	free_sprites(t_game_data *g_d)
 	{
 		if (g_d->images->wall)
 			mlx_destroy_image(g_d->mlx, g_d->images->wall);
-		if (g_d->images->player)
-			mlx_destroy_image(g_d->mlx, g_d->images->player);
+		if (g_d->images->player_1)
+			mlx_destroy_image(g_d->mlx, g_d->images->player_1);
+		if (g_d->images->player_2)
+			mlx_destroy_image(g_d->mlx, g_d->images->player_2);
 		if (g_d->images->empty)
 			mlx_destroy_image(g_d->mlx, g_d->images->empty);
 		if (g_d->images->key)
