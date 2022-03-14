@@ -40,9 +40,9 @@ typedef struct t_sprites
 	//void	*wall_right;
 	//void	*wall_top;
 	//void	*wall_botom;
-} s_sprites;
+}	t_sprites;
 
-typedef struct t_game_data
+typedef struct s_game_data
 {
 	void		*mlx;
 	void		*window;
@@ -54,16 +54,16 @@ typedef struct t_game_data
 	int			player_x;
 	int			player_y;
 	int			collectibles;
-	s_sprites	*images;
-} s_game_data;
+	t_sprites	*images;
+}	t_game_data;
 
 // Utils
-void	validate_map(s_game_data *g_d);
-void	error_die(char *error_code, char *color, s_game_data *g_d);
+void	init_structs(char *map_name, t_game_data *g_d, t_sprites *images);
+void	error_die(char *error_code, char *color, t_game_data *g_d);
+void	validate_map(t_game_data *g_d);
 
 // map_handle
-char	**get_map(char *filename, s_game_data *g_d);
-void	draw_map(s_game_data *g_d);
-void	get_map_dims(s_game_data *g_d);
+char	**get_map(char *filename, t_game_data *g_d);
+void	draw_map(t_game_data *g_d);
 
 #endif

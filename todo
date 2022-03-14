@@ -1,4 +1,4 @@
-1) add validation of the map
+V 1) add validation of the map
 V 2) add expandable error header wich will contain all the error_code<->error_message macroses
     so that I could call error() func and just send a error code in it.
 X rejected idea 3) swap to the 32x32 images

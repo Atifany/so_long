@@ -12,7 +12,7 @@
 
 #include "../so_long.h"
 
-char	**get_map(char *filename, s_game_data *g_d)
+char	**get_map(char *filename, t_game_data *g_d)
 {
 	int		fd;
 	char	*line;
@@ -37,7 +37,34 @@ char	**get_map(char *filename, s_game_data *g_d)
 	return (ans);
 }
 
-void	draw_map(s_game_data *g_d)
+static void	draw_map_helper(t_game_data *g_d, int i, int j)
+{
+	if (g_d->map[i][j] == '1')
+		mlx_put_image_to_window(g_d->mlx, g_d->window,
+			g_d->images->wall,
+			j * g_d->img_width, i * g_d->img_height);
+	else if (g_d->map[i][j] == '0')
+		mlx_put_image_to_window(g_d->mlx, g_d->window,
+			g_d->images->empty,
+			j * g_d->img_width, i * g_d->img_height);
+	else if (g_d->map[i][j] == 'E')
+		mlx_put_image_to_window(g_d->mlx, g_d->window,
+			g_d->images->exit,
+			j * g_d->img_width, i * g_d->img_height);
+	else if (g_d->map[i][j] == 'P')
+	{
+		g_d->player_x = j;
+		g_d->player_y = i;
+		mlx_put_image_to_window(g_d->mlx, g_d->window,
+			g_d->images->empty,
+			j * g_d->img_width, i * g_d->img_height);
+		mlx_put_image_to_window(g_d->mlx, g_d->window,
+			g_d->images->player,
+			j * g_d->img_width, i * g_d->img_height);
+	}
+}
+
+void	draw_map(t_game_data *g_d)
 {
 	int	i;
 	int	j;
@@ -48,59 +75,18 @@ void	draw_map(s_game_data *g_d)
 		j = 0;
 		while (g_d->map[i][j])
 		{
-			if (g_d->map[i][j] == '1')
-				mlx_put_image_to_window(g_d->mlx, g_d->window,
-										g_d->images->wall,
-										j * g_d->img_width, i * g_d->img_height);
-			else if (g_d->map[i][j] == '0')
-				mlx_put_image_to_window(g_d->mlx, g_d->window,
-										g_d->images->empty,
-										j * g_d->img_width, i * g_d->img_height);
-			else if (g_d->map[i][j] == 'E')
-				mlx_put_image_to_window(g_d->mlx, g_d->window,
-										g_d->images->exit,
-										j * g_d->img_width, i * g_d->img_height);
-			else if (g_d->map[i][j] == 'P')
-			{
-				g_d->player_x = j;
-				g_d->player_y = i;
-				mlx_put_image_to_window(g_d->mlx, g_d->window,
-										g_d->images->empty,
-										j * g_d->img_width, i * g_d->img_height);
-				mlx_put_image_to_window(g_d->mlx, g_d->window,
-										g_d->images->player,
-										j * g_d->img_width, i * g_d->img_height);
-			}
-			else if (g_d->map[i][j] == 'C')
+			draw_map_helper(g_d, i, j);
+			if (g_d->map[i][j] == 'C')
 			{
 				mlx_put_image_to_window(g_d->mlx, g_d->window,
-										g_d->images->empty,
-										j * g_d->img_width, i * g_d->img_height);
+					g_d->images->empty,
+					j * g_d->img_width, i * g_d->img_height);
 				mlx_put_image_to_window(g_d->mlx, g_d->window,
-										g_d->images->key,
-										j * g_d->img_width, i * g_d->img_height);
+					g_d->images->key,
+					j * g_d->img_width, i * g_d->img_height);
 			}
 			j++;
 		}
 		i++;
 	}
-}
-
-void	get_map_dims(s_game_data *g_d)
-{
-	char	**map;
-	int		rows;
-	int		cols;
-
-	map = g_d->map;
-	rows = 0;
-	while (map[rows])
-	{
-		cols = 0;
-		while (map[rows][cols])
-			cols++;
-		rows++;
-	}
-	g_d->rows = rows;
-	g_d->cols = cols;
 }

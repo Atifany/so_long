@@ -24,7 +24,7 @@ static void	free_map(char ***map)
 	free(*map);
 }
 
-static void	free_sprites(s_game_data *g_d)
+static void	free_sprites(t_game_data *g_d)
 {
 	if (g_d->images)
 	{
@@ -41,7 +41,7 @@ static void	free_sprites(s_game_data *g_d)
 	}
 }
 
-void	error_die(char *error_code, char *color, s_game_data *g_d)
+void	error_die(char *error_code, char *color, t_game_data *g_d)
 {
 	if (g_d)
 	{

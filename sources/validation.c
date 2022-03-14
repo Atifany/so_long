@@ -12,11 +12,12 @@
 
 #include "../so_long.h"
 
-static void	check_dubs_and_count_collect(s_game_data *g_d)
+static void	check_dubs_and_count_collect(t_game_data *g_d)
 {
 	char	alphabet[2];
 	int		row;
 	int		col;
+
 	ft_bzero(alphabet, 2);
 	row = 0;
 	while (g_d->map[row])
@@ -38,7 +39,7 @@ static void	check_dubs_and_count_collect(s_game_data *g_d)
 	}
 }
 
-static void	check_symbols_and_len(s_game_data *g_d)
+static void	check_symbols_and_len(t_game_data *g_d)
 {
 	char	*alphabet;
 	int		row;
@@ -63,11 +64,34 @@ static void	check_symbols_and_len(s_game_data *g_d)
 				error_die(INVALID_MAP_LINES, RED, g_d);
 		row++;
 	}
+	g_d->rows = row;
+	g_d->cols = col;
 }
 
-void	validate_map(s_game_data *g_d)
+static void	check_if_closed_by_walls(t_game_data *g_d)
+{
+	int		row;
+	int		col;
+
+	row = 0;
+	while (g_d->map[row])
+	{
+		col = 0;
+		while (g_d->map[row][col])
+		{
+			if ((row == 0 || row == g_d->rows - 1
+					|| col == 0 || col == g_d->cols - 1)
+				&& g_d->map[row][col] != '1')
+				error_die(INVALID_MAP_WALLS, RED, g_d);
+			col++;
+		}
+		row++;
+	}
+}
+
+void	validate_map(t_game_data *g_d)
 {
 	check_symbols_and_len(g_d);
 	check_dubs_and_count_collect(g_d);
-	// add validation for walls. I mean check if all the borders of the map are actually walls!
+	check_if_closed_by_walls(g_d);
 }
