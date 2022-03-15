@@ -36,6 +36,8 @@ typedef struct t_sprites
 	void	*exit;
 	void	*player_1;
 	void	*player_2;
+	void	*player_1_left;
+	void	*player_2_left;
 	void	*key;
 	//void	*wall_left;
 	//void	*wall_right;
@@ -55,6 +57,8 @@ typedef struct s_game_data
 	int			player_x;
 	int			player_y;
 	int			collectibles;
+	char		is_facing_right;
+	char		anim;
 	t_sprites	*images;
 }	t_game_data;
 

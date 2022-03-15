@@ -37,7 +37,7 @@ char	**get_map(char *filename, t_game_data *g_d)
 	return (ans);
 }
 
-static void	draw_map_helper(t_game_data *g_d, int i, int j)
+static void	draw_map_helper_1(t_game_data *g_d, int i, int j)
 {
 	if (g_d->map[i][j] == '1')
 		mlx_put_image_to_window(g_d->mlx, g_d->window,
@@ -51,53 +51,83 @@ static void	draw_map_helper(t_game_data *g_d, int i, int j)
 		mlx_put_image_to_window(g_d->mlx, g_d->window,
 			g_d->images->exit,
 			j * g_d->img_width, i * g_d->img_height);
-	else if (g_d->map[i][j] == 'P')
+	else if (g_d->map[i][j] == 'C')
 	{
-		g_d->player_x = j;
-		g_d->player_y = i;
 		mlx_put_image_to_window(g_d->mlx, g_d->window,
 			g_d->images->empty,
 			j * g_d->img_width, i * g_d->img_height);
 		mlx_put_image_to_window(g_d->mlx, g_d->window,
-			g_d->images->player_1,
+			g_d->images->key,
 			j * g_d->img_width, i * g_d->img_height);
 	}
-	else if (g_d->map[i][j] == 'p')
+}
+
+static void	draw_map_helper_3(t_game_data *g_d, int i, int j)
+{
+	if (g_d->anim == TRUE)
+	{
+		if (g_d->is_facing_right == TRUE)
+			mlx_put_image_to_window(g_d->mlx, g_d->window,
+				g_d->images->player_1, j * g_d->img_width, i * g_d->img_height);
+		else
+			mlx_put_image_to_window(g_d->mlx, g_d->window,
+				g_d->images->player_1_left, j * g_d->img_width,
+				i * g_d->img_height);
+	}
+	else
+	{
+		if (g_d->is_facing_right == TRUE)
+			mlx_put_image_to_window(g_d->mlx, g_d->window,
+				g_d->images->player_2, j * g_d->img_width, i * g_d->img_height);
+		else
+			mlx_put_image_to_window(g_d->mlx, g_d->window,
+				g_d->images->player_2_left, j * g_d->img_width,
+				i * g_d->img_height);
+	}
+}
+
+static void	draw_map_helper_2(t_game_data *g_d, int i, int j)
+{
+	if (g_d->map[i][j] == 'P')
 	{
 		g_d->player_x = j;
 		g_d->player_y = i;
 		mlx_put_image_to_window(g_d->mlx, g_d->window,
-								g_d->images->empty,
-								j * g_d->img_width, i * g_d->img_height);
-		mlx_put_image_to_window(g_d->mlx, g_d->window,
-								g_d->images->player_2,
-								j * g_d->img_width, i * g_d->img_height);
+			g_d->images->empty, j * g_d->img_width, i * g_d->img_height);
+		draw_map_helper_3(g_d, i, j);
 	}
 }
 
 void	draw_map(t_game_data *g_d)
 {
-	int	i;
-	int	j;
+	static char	**map_s;
+	char		flag;
+	int			i;
+	int			j;
 
+	flag = FALSE;
+	if (!map_s)
+	{
+		map_s = g_d->map;
+		flag = TRUE;
+	}
 	i = 0;
 	while (g_d->map[i])
 	{
 		j = 0;
 		while (g_d->map[i][j])
 		{
-			draw_map_helper(g_d, i, j);
-			if (g_d->map[i][j] == 'C')
+			if (g_d->map[i][j] != map_s[i][j] || flag == TRUE)
 			{
-				mlx_put_image_to_window(g_d->mlx, g_d->window,
-					g_d->images->empty,
-					j * g_d->img_width, i * g_d->img_height);
-				mlx_put_image_to_window(g_d->mlx, g_d->window,
-					g_d->images->key,
-					j * g_d->img_width, i * g_d->img_height);
+				ft_printf("%sFLAG: |%d|%s\n", CYN, flag, NC);
+				ft_printf("%s|%s|\n|%s|\n|%s|\n|%s|\n|%s|\n%s", YEL, map_s[0], map_s[1], map_s[2], map_s[3], map_s[4], NC);
+				ft_printf("%s|%s|\n|%s|\n|%s|\n|%s|\n|%s|\n%s", RED, g_d->map[0], g_d->map[1], g_d->map[2], g_d->map[3], g_d->map[4], NC);
+				draw_map_helper_1(g_d, i, j);
+				draw_map_helper_2(g_d, i, j);
 			}
 			j++;
 		}
 		i++;
 	}
+	map_s = g_d->map;
 }

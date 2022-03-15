@@ -15,6 +15,8 @@
 static void	move(t_game_data *g_d, int shift_x, int shift_y)
 {
 	static int	movements = 0;
+	char		window_string[21];
+	char		*movements_str;
 
 	if (g_d->map[g_d->player_y + shift_y][g_d->player_x + shift_x] == '1')
 		return ;
@@ -32,8 +34,13 @@ static void	move(t_game_data *g_d, int shift_x, int shift_y)
 		g_d->map[g_d->player_y + shift_y][g_d->player_x + shift_x] = 'P';
 		g_d->map[g_d->player_y][g_d->player_x] = '0';
 	}
+	ft_printf("%s|%s|\n|%s|\n|%s|\n|%s|\n|%s|\n%s", MAG, g_d->map[0], g_d->map[1], g_d->map[2], g_d->map[3], g_d->map[4], NC);
+	ft_printf("Called draw map\n");
 	draw_map(g_d);
-	ft_printf("%sMovements: %d%s\n", YEL, movements++, NC);
+	ft_strlcpy(window_string, "Movements: ", 11);
+	movements_str = ft_itoa(movements++);
+	ft_strlcat(window_string, movements_str, 21);
+	mlx_string_put(g_d->mlx, g_d->window, 20, 20, 0xFFFFFFFF, window_string);
 }
 
 static int	key_hook(int keycode, t_game_data *g_d)
@@ -43,11 +50,17 @@ static int	key_hook(int keycode, t_game_data *g_d)
 	if (keycode == W)
 		move(g_d, 0, -1);
 	if (keycode == A)
+	{
+		g_d->is_facing_right = FALSE;
 		move(g_d, -1, 0);
+	}
 	if (keycode == S)
 		move(g_d, 0, 1);
 	if (keycode == D)
+	{
+		g_d->is_facing_right = TRUE;
 		move(g_d, 1, 0);
+	}
 	return (0);
 }
 
@@ -60,17 +73,17 @@ static int	die_hook(void *g_d)
 static int	loop_hook(t_game_data *g_d)
 {
 	static int	clock = 0;
-	if (clock < 100)
-	{
-		clock++;
+
+	if (clock++ < 2000)
 		return (0);
-	}
 	else
 	{
 		clock = 0;
-		g_d->map[g_d->player_y][g_d->player_x] = 'p';
+		if (g_d->anim == FALSE)
+			g_d->anim = TRUE;
+		else
+			g_d->anim = FALSE;
 		draw_map(g_d);
-		g_d->map[g_d->player_y][g_d->player_x] = 'P';
 	}
 	return (0);
 }

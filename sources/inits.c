@@ -29,37 +29,53 @@ static void	null_structs(t_game_data *g_d, t_sprites *images)
 	g_d->img_width = 0;
 	g_d->player_x = 0;
 	g_d->player_y = 0;
+	g_d->is_facing_right = TRUE;
+	g_d->anim = TRUE;
 	g_d->collectibles = 0;
 	g_d->map = NULL;
 }
 
-static void	init_sprites(t_game_data *g_d, t_sprites *images)
+static void	init_sprites_2(t_game_data *g_d, t_sprites *images)
+{
+	images->player_1_left = mlx_xpm_file_to_image(g_d->mlx,
+			"assets/player-1-left.xpm",
+			&(g_d->img_width), &(g_d->img_height));
+	if (!images->player_1_left)
+		error_die(XPM_CONVERT_FAIL_PLAYER, RED, g_d);
+	images->player_2_left = mlx_xpm_file_to_image(g_d->mlx,
+			"assets/player-2-left.xpm",
+			&(g_d->img_width), &(g_d->img_height));
+	if (!images->player_2_left)
+		error_die(XPM_CONVERT_FAIL_PLAYER, RED, g_d);
+	images->exit = mlx_xpm_file_to_image(g_d->mlx, "assets/door.xpm",
+			&(g_d->img_width), &(g_d->img_height));
+	if (!images->exit)
+		error_die(XPM_CONVERT_FAIL_EXIT, RED, g_d);
+	images->key = mlx_xpm_file_to_image(g_d->mlx, "assets/cake.xpm",
+			&(g_d->img_width), &(g_d->img_height));
+	if (!images->key)
+		error_die(XPM_CONVERT_FAIL_KEY, RED, g_d);
+	g_d->images = images;
+}
+
+static void	init_sprites_1(t_game_data *g_d, t_sprites *images)
 {
 	images->wall = mlx_xpm_file_to_image(g_d->mlx, "assets/wall.xpm",
 			&(g_d->img_width), &(g_d->img_height));
 	if (!images->wall)
 		error_die(XPM_CONVERT_FAIL_WALL, RED, g_d);
-	images->empty = mlx_xpm_file_to_image(g_d->mlx, "assets/empty.xpm",
+	images->empty = mlx_xpm_file_to_image(g_d->mlx, "assets/floor.xpm",
 			&(g_d->img_width), &(g_d->img_height));
 	if (!images->empty)
-		error_die(XPM_CONVERT_FAIL_EMPTY, RED, g_d);
+		error_die(XPM_CONVERT_FAIL_PLAYER, RED, g_d);
 	images->player_1 = mlx_xpm_file_to_image(g_d->mlx, "assets/player-1.xpm",
 			&(g_d->img_width), &(g_d->img_height));
 	if (!images->player_1)
 		error_die(XPM_CONVERT_FAIL_PLAYER, RED, g_d);
 	images->player_2 = mlx_xpm_file_to_image(g_d->mlx, "assets/player-2.xpm",
-											 &(g_d->img_width), &(g_d->img_height));
-	if (!images->player_2)
+			&(g_d->img_width), &(g_d->img_height));
+	if (!images->empty)
 		error_die(XPM_CONVERT_FAIL_PLAYER, RED, g_d);
-	images->exit = mlx_xpm_file_to_image(g_d->mlx, "assets/exit.xpm",
-			&(g_d->img_width), &(g_d->img_height));
-	if (!images->exit)
-		error_die(XPM_CONVERT_FAIL_EXIT, RED, g_d);
-	images->key = mlx_xpm_file_to_image(g_d->mlx, "assets/key.xpm",
-			&(g_d->img_width), &(g_d->img_height));
-	if (!images->key)
-		error_die(XPM_CONVERT_FAIL_KEY, RED, g_d);
-	g_d->images = images;
 }
 
 void	init_structs(char *map_name, t_game_data *g_d, t_sprites *images)
@@ -74,5 +90,6 @@ void	init_structs(char *map_name, t_game_data *g_d, t_sprites *images)
 	g_d->mlx = mlx_init();
 	g_d->window = mlx_new_window(g_d->mlx,
 			g_d->cols * 64, g_d->rows * 64, "so_long");
-	init_sprites(g_d, images);
+	init_sprites_1(g_d, images);
+	init_sprites_2(g_d, images);
 }
