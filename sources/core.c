@@ -57,6 +57,24 @@ static int	die_hook(void *g_d)
 	return (0);
 }
 
+static int	loop_hook(t_game_data *g_d)
+{
+	static int	clock = 0;
+	if (clock < 100)
+	{
+		clock++;
+		return (0);
+	}
+	else
+	{
+		clock = 0;
+		g_d->map[g_d->player_y][g_d->player_x] = 'p';
+		draw_map(g_d);
+		g_d->map[g_d->player_y][g_d->player_x] = 'P';
+	}
+	return (0);
+}
+
 int	main(int argc, char **argv)
 {
 	t_game_data	g_d;
@@ -68,6 +86,7 @@ int	main(int argc, char **argv)
 	draw_map(&g_d);
 	mlx_key_hook(g_d.window, key_hook, &g_d);
 	mlx_hook(g_d.window, 17, 0L, die_hook, &g_d);
+	mlx_loop_hook(g_d.mlx, loop_hook, &g_d);
 	mlx_loop(g_d.mlx);
 	return (0);
 }

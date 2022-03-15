@@ -11,3 +11,4 @@ V 9) access map via char **map to make walls unwalkable and player moveable.
     also modify map variable to move objects on a map by moving them in char **map.
 V 10) clear the code. I mean get rid of g_d->smth everywhere! use local variable, they don't bite!
 11) also norme it!
+12) add rotate image func

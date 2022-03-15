@@ -35,7 +35,7 @@ static void	null_structs(t_game_data *g_d, t_sprites *images)
 
 static void	init_sprites(t_game_data *g_d, t_sprites *images)
 {
-	images->wall = mlx_xpm_file_to_image(g_d->mlx, "assets/wall_bricks_moss.xpm",
+	images->wall = mlx_xpm_file_to_image(g_d->mlx, "assets/wall.xpm",
 			&(g_d->img_width), &(g_d->img_height));
 	if (!images->wall)
 		error_die(XPM_CONVERT_FAIL_WALL, RED, g_d);
@@ -43,11 +43,11 @@ static void	init_sprites(t_game_data *g_d, t_sprites *images)
 			&(g_d->img_width), &(g_d->img_height));
 	if (!images->empty)
 		error_die(XPM_CONVERT_FAIL_EMPTY, RED, g_d);
-	images->player_1 = mlx_xpm_file_to_image(g_d->mlx, "assets/apple_1.xpm",
+	images->player_1 = mlx_xpm_file_to_image(g_d->mlx, "assets/player-1.xpm",
 			&(g_d->img_width), &(g_d->img_height));
 	if (!images->player_1)
 		error_die(XPM_CONVERT_FAIL_PLAYER, RED, g_d);
-	images->player_2 = mlx_xpm_file_to_image(g_d->mlx, "assets/apple_2.xpm",
+	images->player_2 = mlx_xpm_file_to_image(g_d->mlx, "assets/player-2.xpm",
 											 &(g_d->img_width), &(g_d->img_height));
 	if (!images->player_2)
 		error_die(XPM_CONVERT_FAIL_PLAYER, RED, g_d);

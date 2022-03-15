@@ -62,6 +62,17 @@ static void	draw_map_helper(t_game_data *g_d, int i, int j)
 			g_d->images->player_1,
 			j * g_d->img_width, i * g_d->img_height);
 	}
+	else if (g_d->map[i][j] == 'p')
+	{
+		g_d->player_x = j;
+		g_d->player_y = i;
+		mlx_put_image_to_window(g_d->mlx, g_d->window,
+								g_d->images->empty,
+								j * g_d->img_width, i * g_d->img_height);
+		mlx_put_image_to_window(g_d->mlx, g_d->window,
+								g_d->images->player_2,
+								j * g_d->img_width, i * g_d->img_height);
+	}
 }
 
 void	draw_map(t_game_data *g_d)
