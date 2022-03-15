@@ -62,6 +62,12 @@ typedef struct s_game_data
 	t_sprites	*images;
 }	t_game_data;
 
+typedef struct s_point
+{
+	int	x;
+	int	y;
+} t_point;
+
 // Utils
 void	init_structs(char *map_name, t_game_data *g_d, t_sprites *images);
 void	error_die(char *error_code, char *color, t_game_data *g_d);
@@ -69,6 +75,6 @@ void	validate_map(t_game_data *g_d);
 
 // map_handle
 char	**get_map(char *filename, t_game_data *g_d);
-void	draw_map(t_game_data *g_d);
+void	draw_map(t_game_data *g_d, void *p_from, void *p_to);
 
 #endif

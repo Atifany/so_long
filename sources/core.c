@@ -34,9 +34,7 @@ static void	move(t_game_data *g_d, int shift_x, int shift_y)
 		g_d->map[g_d->player_y + shift_y][g_d->player_x + shift_x] = 'P';
 		g_d->map[g_d->player_y][g_d->player_x] = '0';
 	}
-	ft_printf("%s|%s|\n|%s|\n|%s|\n|%s|\n|%s|\n%s", MAG, g_d->map[0], g_d->map[1], g_d->map[2], g_d->map[3], g_d->map[4], NC);
-	ft_printf("Called draw map\n");
-	draw_map(g_d);
+	draw_map(g_d, &(t_point){g_d->player_y, g_d->player_x}, &(t_point){g_d->player_y + shift_x, g_d->player_x + shift_y});
 	ft_strlcpy(window_string, "Movements: ", 11);
 	movements_str = ft_itoa(movements++);
 	ft_strlcat(window_string, movements_str, 21);
@@ -83,7 +81,7 @@ static int	loop_hook(t_game_data *g_d)
 			g_d->anim = TRUE;
 		else
 			g_d->anim = FALSE;
-		draw_map(g_d);
+		draw_map(g_d, &(t_point){g_d->player_y, g_d->player_x}, &(t_point){g_d->player_y, g_d->player_x});
 	}
 	return (0);
 }
@@ -96,7 +94,7 @@ int	main(int argc, char **argv)
 	if (argc != 2)
 		error_die(INVALID_TERM_CALL, RED, NULL);
 	init_structs(argv[1], &g_d, &images);
-	draw_map(&g_d);
+	draw_map(&g_d, NULL, NULL);
 	mlx_key_hook(g_d.window, key_hook, &g_d);
 	mlx_hook(g_d.window, 17, 0L, die_hook, &g_d);
 	mlx_loop_hook(g_d.mlx, loop_hook, &g_d);
