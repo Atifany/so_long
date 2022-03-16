@@ -12,12 +12,24 @@
 
 #include "../so_long.h"
 
-static void	move(t_game_data *g_d, int shift_x, int shift_y)
+static void	put_str_on_window(t_game_data *g_d)
 {
 	static int	movements = 0;
-	char		window_string[21];
-	char		*movements_str;
+	char		*str_1;
+	char		*str_2;
 
+	draw_tile(g_d, (t_point){0, 0});
+	draw_tile(g_d, (t_point){1, 0});
+	str_1 = "Movements: ";
+	str_2 = ft_itoa(movements++);
+	str_1 = ft_strjoin(str_1, str_2);
+	mlx_string_put(g_d->mlx, g_d->window, 20, 20, 0xFFFFFFFF, str_1);
+	free(str_1);
+	free(str_2);
+}
+
+void	move(t_game_data *g_d, int shift_x, int shift_y)
+{
 	if (g_d->map[g_d->player_y + shift_y][g_d->player_x + shift_x] == '1')
 		return ;
 	else
@@ -33,57 +45,13 @@ static void	move(t_game_data *g_d, int shift_x, int shift_y)
 		}
 		g_d->map[g_d->player_y + shift_y][g_d->player_x + shift_x] = 'P';
 		g_d->map[g_d->player_y][g_d->player_x] = '0';
+		draw_tile(g_d,
+			(t_point){g_d->player_x + shift_x, g_d->player_y + shift_y});
+		draw_tile(g_d, (t_point){g_d->player_x, g_d->player_y});
+		g_d->player_x = g_d->player_x + shift_x;
+		g_d->player_y = g_d->player_y + shift_y;
+		put_str_on_window(g_d);
 	}
-	draw_map(g_d, &(t_point){g_d->player_y, g_d->player_x}, &(t_point){g_d->player_y + shift_x, g_d->player_x + shift_y});
-	ft_strlcpy(window_string, "Movements: ", 11);
-	movements_str = ft_itoa(movements++);
-	ft_strlcat(window_string, movements_str, 21);
-	mlx_string_put(g_d->mlx, g_d->window, 20, 20, 0xFFFFFFFF, window_string);
-}
-
-static int	key_hook(int keycode, t_game_data *g_d)
-{
-	if (keycode == ESC)
-		error_die(ESC_PRESSED, GRN, g_d);
-	if (keycode == W)
-		move(g_d, 0, -1);
-	if (keycode == A)
-	{
-		g_d->is_facing_right = FALSE;
-		move(g_d, -1, 0);
-	}
-	if (keycode == S)
-		move(g_d, 0, 1);
-	if (keycode == D)
-	{
-		g_d->is_facing_right = TRUE;
-		move(g_d, 1, 0);
-	}
-	return (0);
-}
-
-static int	die_hook(void *g_d)
-{
-	error_die(EXIT_PRESSED, GRN, g_d);
-	return (0);
-}
-
-static int	loop_hook(t_game_data *g_d)
-{
-	static int	clock = 0;
-
-	if (clock++ < 2000)
-		return (0);
-	else
-	{
-		clock = 0;
-		if (g_d->anim == FALSE)
-			g_d->anim = TRUE;
-		else
-			g_d->anim = FALSE;
-		draw_map(g_d, &(t_point){g_d->player_y, g_d->player_x}, &(t_point){g_d->player_y, g_d->player_x});
-	}
-	return (0);
 }
 
 int	main(int argc, char **argv)
@@ -94,7 +62,7 @@ int	main(int argc, char **argv)
 	if (argc != 2)
 		error_die(INVALID_TERM_CALL, RED, NULL);
 	init_structs(argv[1], &g_d, &images);
-	draw_map(&g_d, NULL, NULL);
+	draw_map(&g_d);
 	mlx_key_hook(g_d.window, key_hook, &g_d);
 	mlx_hook(g_d.window, 17, 0L, die_hook, &g_d);
 	mlx_loop_hook(g_d.mlx, loop_hook, &g_d);

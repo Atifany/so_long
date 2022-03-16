@@ -83,6 +83,11 @@ static void	check_if_closed_by_walls(t_game_data *g_d)
 					|| col == 0 || col == g_d->cols - 1)
 				&& g_d->map[row][col] != '1')
 				error_die(INVALID_MAP_WALLS, RED, g_d);
+			if (g_d->map[row][col] == 'P')
+			{
+				g_d->player_x = col;
+				g_d->player_y = row;
+			}
 			col++;
 		}
 		row++;

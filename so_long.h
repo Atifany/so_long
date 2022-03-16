@@ -75,6 +75,17 @@ void	validate_map(t_game_data *g_d);
 
 // map_handle
 char	**get_map(char *filename, t_game_data *g_d);
-void	draw_map(t_game_data *g_d, void *p_from, void *p_to);
+void	draw_tile(t_game_data *g_d, t_point p);
+void	draw_map(t_game_data *g_d);
+
+//map helpers
+void	draw_map_helper_1(t_game_data *g_d, int x, int y);
+void	draw_map_helper_2(t_game_data *g_d, int x, int y);
+
+//hooks
+void	move(t_game_data *g_d, int shift_x, int shift_y);
+int		key_hook(int keycode, t_game_data *g_d);
+int		loop_hook(t_game_data *g_d);
+int		die_hook(void *g_d);
 
 #endif
