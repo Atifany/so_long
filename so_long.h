@@ -58,10 +58,13 @@ typedef struct s_game_data
 	int			cols;
 	int			img_width;
 	int			img_height;
+	int			collectibles;
 	int			player_x;
 	int			player_y;
-	int			collectibles;
-	char		is_facing_right;
+	int			enemy_x;
+	int			enemy_y;
+	char		player_is_facing_right;
+	char		enemy_is_facing_right;
 	char		anim;
 	t_sprites	*images;
 }	t_game_data;

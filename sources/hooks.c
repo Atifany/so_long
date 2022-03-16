@@ -20,14 +20,14 @@ int	key_hook(int keycode, t_game_data *g_d)
 		move(g_d, 0, -1);
 	if (keycode == A)
 	{
-		g_d->is_facing_right = FALSE;
+		g_d->player_is_facing_right = FALSE;
 		move(g_d, -1, 0);
 	}
 	if (keycode == S)
 		move(g_d, 0, 1);
 	if (keycode == D)
 	{
-		g_d->is_facing_right = TRUE;
+		g_d->player_is_facing_right = TRUE;
 		move(g_d, 1, 0);
 	}
 	return (0);
@@ -53,6 +53,7 @@ int	loop_hook(t_game_data *g_d)
 		else
 			g_d->anim = FALSE;
 		draw_tile(g_d, (t_point){g_d->player_x, g_d->player_y});
+		draw_tile(g_d, (t_point){g_d->enemy_x, g_d->enemy_y});
 	}
 	return (0);
 }

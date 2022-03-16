@@ -12,11 +12,35 @@
 
 #include "../so_long.h"
 
-static void	draw_map_helper_3(t_game_data *g_d, int x, int y)
+static void	draw_map_helper_enemy(t_game_data *g_d, int x, int y)
 {
 	if (g_d->anim == TRUE)
 	{
-		if (g_d->is_facing_right == TRUE)
+		if (g_d->enemy_is_facing_right == TRUE)
+			mlx_put_image_to_window(g_d->mlx, g_d->window,
+									g_d->images->enemy_1, x * g_d->img_width, y * g_d->img_height);
+		else
+			mlx_put_image_to_window(g_d->mlx, g_d->window,
+									g_d->images->enemy_1_left, x * g_d->img_width,
+									y * g_d->img_height);
+	}
+	else
+	{
+		if (g_d->enemy_is_facing_right == TRUE)
+			mlx_put_image_to_window(g_d->mlx, g_d->window,
+									g_d->images->enemy_2, x * g_d->img_width, y * g_d->img_height);
+		else
+			mlx_put_image_to_window(g_d->mlx, g_d->window,
+									g_d->images->enemy_2_left, x * g_d->img_width,
+									y * g_d->img_height);
+	}
+}
+
+static void	draw_map_helper_player(t_game_data *g_d, int x, int y)
+{
+	if (g_d->anim == TRUE)
+	{
+		if (g_d->player_is_facing_right == TRUE)
 			mlx_put_image_to_window(g_d->mlx, g_d->window,
 				g_d->images->player_1, x * g_d->img_width, y * g_d->img_height);
 		else
@@ -26,7 +50,7 @@ static void	draw_map_helper_3(t_game_data *g_d, int x, int y)
 	}
 	else
 	{
-		if (g_d->is_facing_right == TRUE)
+		if (g_d->player_is_facing_right == TRUE)
 			mlx_put_image_to_window(g_d->mlx, g_d->window,
 				g_d->images->player_2, x * g_d->img_width, y * g_d->img_height);
 		else
@@ -67,6 +91,12 @@ void	draw_map_helper_2(t_game_data *g_d, int x, int y)
 	{
 		mlx_put_image_to_window(g_d->mlx, g_d->window,
 			g_d->images->empty, x * g_d->img_width, y * g_d->img_height);
-		draw_map_helper_3(g_d, x, y);
+		draw_map_helper_player(g_d, x, y);
+	}
+	else if (g_d->map[y][x] == 'S')
+	{
+		mlx_put_image_to_window(g_d->mlx, g_d->window,
+								g_d->images->empty, x * g_d->img_width, y * g_d->img_height);
+		draw_map_helper_enemy(g_d, x, y);
 	}
 }

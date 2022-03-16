@@ -28,6 +28,31 @@ static void	put_str_on_window(t_game_data *g_d)
 	free(str_2);
 }
 
+static void	move_enemy(t_game_data *g_d)
+{
+	int shift_x;
+	int shift_y;
+
+	//fill shift_x and shift_y by path_finding algorithm here.
+	shift_x = 0;
+	shift_y = -1;
+	if (shift_x < 0)
+		g_d->enemy_is_facing_right = FALSE;
+	else if (shift_x > 0)
+		g_d->enemy_is_facing_right = TRUE;
+	if (g_d->map[g_d->enemy_y + shift_y][g_d->enemy_x + shift_x] == '1'
+		|| g_d->map[g_d->enemy_y + shift_y][g_d->enemy_x + shift_x] == 'E'
+		|| g_d->map[g_d->enemy_y + shift_y][g_d->enemy_x + shift_x] == 'C')
+		return ;
+	g_d->map[g_d->enemy_y + shift_y][g_d->enemy_x + shift_x] = 'S';
+	g_d->map[g_d->enemy_y][g_d->enemy_x] = '0';
+	draw_tile(g_d,
+			  (t_point){g_d->enemy_x + shift_x, g_d->enemy_y + shift_y});
+	draw_tile(g_d, (t_point){g_d->enemy_x, g_d->enemy_y});
+	g_d->enemy_x = g_d->enemy_x + shift_x;
+	g_d->enemy_y = g_d->enemy_y + shift_y;
+}
+
 void	move(t_game_data *g_d, int shift_x, int shift_y)
 {
 	if (g_d->map[g_d->player_y + shift_y][g_d->player_x + shift_x] == '1')
@@ -51,6 +76,7 @@ void	move(t_game_data *g_d, int shift_x, int shift_y)
 		g_d->player_x = g_d->player_x + shift_x;
 		g_d->player_y = g_d->player_y + shift_y;
 		put_str_on_window(g_d);
+		move_enemy(g_d);
 	}
 }
 

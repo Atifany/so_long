@@ -91,6 +91,11 @@ static void	check_if_closed_by_walls(t_game_data *g_d)
 				g_d->player_x = col;
 				g_d->player_y = row;
 			}
+			if (g_d->map[row][col] == 'S')
+			{
+				g_d->enemy_x = col;
+				g_d->enemy_y = row;
+			}
 			col++;
 		}
 		row++;

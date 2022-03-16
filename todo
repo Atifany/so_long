@@ -11,3 +11,5 @@ V 9) access map via char **map to make walls unwalkable and player moveable.
 V 10) clear the code. I mean get rid of g_d->smth everywhere! use local variable, they don't bite!
 11) also norme it! (header included, do not forget!)
 V 13) rewrite move and redraw map;
+14) redraw player character to 64x64 resolution.
+15) mb eventually create one move func for any object?

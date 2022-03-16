@@ -16,6 +16,7 @@
 # define ESC_PRESSED "Exit program on ESC pressed.\n"
 # define EXIT_PRESSED "Exit program on X pressed.\n"
 # define WIN_GAME "You won!\n"
+# define XPM_CONVERT_FAIL_ENEMY "Error:\nMissing sprite asset for [ENEMY]\n"
 # define XPM_CONVERT_FAIL_WALL "Error:\nMissing sprite asset for [WALL]\n"
 # define XPM_CONVERT_FAIL_EMPTY "Error:\nMissing sprite asset for [EMPTY]\n"
 # define XPM_CONVERT_FAIL_PLAYER "Error:\nMissing sprite asset for [PLAYER]\n"

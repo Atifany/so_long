@@ -29,7 +29,10 @@ static void	null_structs(t_game_data *g_d, t_sprites *images)
 	g_d->img_width = 0;
 	g_d->player_x = 0;
 	g_d->player_y = 0;
-	g_d->is_facing_right = TRUE;
+	g_d->enemy_x = 0;
+	g_d->enemy_y = 0;
+	g_d->player_is_facing_right = TRUE;
+	g_d->enemy_is_facing_right = TRUE;
 	g_d->anim = TRUE;
 	g_d->collectibles = 0;
 	g_d->map = NULL;
@@ -41,22 +44,22 @@ static void	init_sprites_3(t_game_data *g_d, t_sprites *images)
 												  "assets/slime-1-right.xpm",
 												  &(g_d->img_width), &(g_d->img_height));
 	if (!images->enemy_1)
-		error_die(XPM_CONVERT_FAIL_PLAYER, RED, g_d);
+		error_die(XPM_CONVERT_FAIL_ENEMY, RED, g_d);
 	images->enemy_2 = mlx_xpm_file_to_image(g_d->mlx,
 												  "assets/slime-2-right.xpm",
 												  &(g_d->img_width), &(g_d->img_height));
 	if (!images->enemy_2)
-		error_die(XPM_CONVERT_FAIL_PLAYER, RED, g_d);
+		error_die(XPM_CONVERT_FAIL_ENEMY, RED, g_d);
 	images->enemy_2_left = mlx_xpm_file_to_image(g_d->mlx,
 												  "assets/slime-1-left.xpm",
 												  &(g_d->img_width), &(g_d->img_height));
 	if (!images->enemy_2_left)
-		error_die(XPM_CONVERT_FAIL_PLAYER, RED, g_d);
+		error_die(XPM_CONVERT_FAIL_ENEMY, RED, g_d);
 	images->enemy_2_left = mlx_xpm_file_to_image(g_d->mlx,
 												  "assets/slime-2-left.xpm",
 												  &(g_d->img_width), &(g_d->img_height));
 	if (!images->enemy_2_left)
-		error_die(XPM_CONVERT_FAIL_PLAYER, RED, g_d);
+		error_die(XPM_CONVERT_FAIL_ENEMY, RED, g_d);
 }
 
 static void	init_sprites_2(t_game_data *g_d, t_sprites *images)
