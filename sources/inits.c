@@ -35,6 +35,30 @@ static void	null_structs(t_game_data *g_d, t_sprites *images)
 	g_d->map = NULL;
 }
 
+static void	init_sprites_3(t_game_data *g_d, t_sprites *images)
+{
+	images->enemy_1 = mlx_xpm_file_to_image(g_d->mlx,
+												  "assets/slime-1-right.xpm",
+												  &(g_d->img_width), &(g_d->img_height));
+	if (!images->enemy_1)
+		error_die(XPM_CONVERT_FAIL_PLAYER, RED, g_d);
+	images->enemy_2 = mlx_xpm_file_to_image(g_d->mlx,
+												  "assets/slime-2-right.xpm",
+												  &(g_d->img_width), &(g_d->img_height));
+	if (!images->enemy_2)
+		error_die(XPM_CONVERT_FAIL_PLAYER, RED, g_d);
+	images->enemy_2_left = mlx_xpm_file_to_image(g_d->mlx,
+												  "assets/slime-1-left.xpm",
+												  &(g_d->img_width), &(g_d->img_height));
+	if (!images->enemy_2_left)
+		error_die(XPM_CONVERT_FAIL_PLAYER, RED, g_d);
+	images->enemy_2_left = mlx_xpm_file_to_image(g_d->mlx,
+												  "assets/slime-2-left.xpm",
+												  &(g_d->img_width), &(g_d->img_height));
+	if (!images->enemy_2_left)
+		error_die(XPM_CONVERT_FAIL_PLAYER, RED, g_d);
+}
+
 static void	init_sprites_2(t_game_data *g_d, t_sprites *images)
 {
 	images->player_1_left = mlx_xpm_file_to_image(g_d->mlx,
@@ -92,4 +116,5 @@ void	init_structs(char *map_name, t_game_data *g_d, t_sprites *images)
 			g_d->cols * 64, g_d->rows * 64, "so_long");
 	init_sprites_1(g_d, images);
 	init_sprites_2(g_d, images);
+	init_sprites_3(g_d, images);
 }

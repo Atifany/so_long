@@ -38,6 +38,10 @@ typedef struct t_sprites
 	void	*player_2;
 	void	*player_1_left;
 	void	*player_2_left;
+	void	*enemy_1;
+	void	*enemy_2;
+	void	*enemy_1_left;
+	void	*enemy_2_left;
 	void	*key;
 	//void	*wall_left;
 	//void	*wall_right;

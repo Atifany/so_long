@@ -14,11 +14,11 @@
 
 static void	check_dubs_and_count_collect(t_game_data *g_d)
 {
-	char	alphabet[2];
+	char	alphabet[3];
 	int		row;
 	int		col;
 
-	ft_bzero(alphabet, 2);
+	ft_bzero(alphabet, 3);
 	row = 0;
 	while (g_d->map[row])
 	{
@@ -30,6 +30,9 @@ static void	check_dubs_and_count_collect(t_game_data *g_d)
 					error_die(INVALID_MAP_DUPLICATE, RED, g_d);
 			if (g_d->map[row][col] == 'E')
 				if (alphabet[1]++ != 0)
+					error_die(INVALID_MAP_DUPLICATE, RED, g_d);
+			if (g_d->map[row][col] == 'S')
+				if (alphabet[2]++ != 0)
 					error_die(INVALID_MAP_DUPLICATE, RED, g_d);
 			if (g_d->map[row][col] == 'C')
 				g_d->collectibles++;
@@ -46,7 +49,7 @@ static void	check_symbols_and_len(t_game_data *g_d)
 	int		col;
 	int		col_save;
 
-	alphabet = "01PEC";
+	alphabet = "01PECS";
 	row = 0;
 	while (g_d->map[row])
 	{
