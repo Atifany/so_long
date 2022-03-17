@@ -24,6 +24,8 @@ char	**get_map(char *filename, t_game_data *g_d)
 	if (fd == -1)
 		error_die(INVALID_TERM_CALL, RED, g_d);
 	line = get_next_line(fd);
+	if (!line)
+		error_die(INVALID_MAP, RED, g_d);
 	while (line)
 	{
 		map = join(&map, line, ft_strlen(line));

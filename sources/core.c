@@ -14,7 +14,7 @@
 
 static void	put_str_on_window(t_game_data *g_d)
 {
-	static int	movements = 0;
+	static int	movements = 1;
 	char		*str_1;
 	char		*str_2;
 
@@ -52,29 +52,27 @@ void	move(t_game_data *g_d, int shift_x, int shift_y)
 {
 	if (g_d->map[g_d->player_y + shift_y][g_d->player_x + shift_x] == 'S')
 		error_die(LOOSE_GAME, RED, g_d);
-	if (g_d->map[g_d->player_y + shift_y][g_d->player_x + shift_x] == '1')
+	else if (g_d->map[g_d->player_y + shift_y][g_d->player_x + shift_x] == '1')
 		return ;
-	else
+	else if (g_d->map[g_d->player_y + shift_y][g_d->player_x + shift_x] == 'C')
+		g_d->collectibles--;
+	else if (g_d->map[g_d->player_y + shift_y][g_d->player_x + shift_x] == 'E')
 	{
-		if (g_d->map[g_d->player_y + shift_y][g_d->player_x + shift_x] == 'C')
-			g_d->collectibles--;
-		if (g_d->map[g_d->player_y + shift_y][g_d->player_x + shift_x] == 'E')
-		{
-			if (g_d->collectibles != 0)
-				return ;
-			else
-				error_die(WIN_GAME, GRN, g_d);
-		}
-		g_d->map[g_d->player_y + shift_y][g_d->player_x + shift_x] = 'P';
-		g_d->map[g_d->player_y][g_d->player_x] = '0';
-		draw_tile(g_d,
-			(t_point){g_d->player_x + shift_x, g_d->player_y + shift_y});
-		draw_tile(g_d, (t_point){g_d->player_x, g_d->player_y});
-		g_d->player_x = g_d->player_x + shift_x;
-		g_d->player_y = g_d->player_y + shift_y;
-		put_str_on_window(g_d);
-		decide_to_move_enemy(g_d);
+		if (g_d->collectibles != 0)
+			return ;
+		else
+			error_die(WIN_GAME, GRN, g_d);
 	}
+	g_d->map[g_d->player_y + shift_y][g_d->player_x + shift_x] = 'P';
+	g_d->map[g_d->player_y][g_d->player_x] = '0';
+	draw_tile(g_d,
+		(t_point){g_d->player_x + shift_x, g_d->player_y + shift_y});
+	draw_tile(g_d, (t_point){g_d->player_x, g_d->player_y});
+	g_d->player_x = g_d->player_x + shift_x;
+	g_d->player_y = g_d->player_y + shift_y;
+	put_str_on_window(g_d);
+	if (g_d->enemy_x != 0)
+		decide_to_move_enemy(g_d);
 }
 
 int	main(int argc, char **argv)

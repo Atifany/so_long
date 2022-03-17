@@ -23,15 +23,7 @@
 # define XPM_CONVERT_FAIL_PLAYER "Error:\nMissing sprite asset for [PLAYER]\n"
 # define XPM_CONVERT_FAIL_KEY "Error:\nMissing sprite asset for [KEY]\n"
 # define XPM_CONVERT_FAIL_EXIT "Error:\nMissing sprite asset for [EXIT]\n"
-# define INVALID_MAP_SYMBOLS "Error:\nInvalid map passed as an argumaent\n"\
-	"There are unexpected symbols on the map!\n"
-# define INVALID_MAP_LINES "Error:\nInvalid map passed as an argumaent\n"\
-	"Map isn't rectangular!\n"
-# define INVALID_MAP_DUPLICATE "Error:\nInvalid map passed as an argumaent.\n"\
-	"There are two players or exits!\n"
-# define INVALID_MAP_WALLS "Error:\nInvalid map passed as an argumaent.\n"\
-	"Map borders are not walls!\n"
-# define INVALID_TERM_CALL "Error:\nInvalid filename passed as an argument.\n"\
-	"Usage: ./so_long [map_filename.ber]\nMap file has to be in a maps folder!\n"
+# define INVALID_MAP "Error:\nInvalid map passed as an argumaent.\n"
+# define INVALID_TERM_CALL "Error:\nCannot open the given map!\n"
 
 #endif

@@ -12,12 +12,43 @@
 
 #include "../so_long.h"
 
-static int	find_dir(t_game_data *g_d, int *neighbours)
+static void	fill_neighbours(t_game_data *g_d, int *neighbours)
 {
 	int	i;
+	int	j;
+	int	k;
+
+	k = 0;
+	i = g_d->enemy_y - 1;
+	while (i <= g_d->enemy_y + 1)
+	{
+		j = g_d->enemy_x - 1;
+		while (j <= g_d->enemy_x + 1)
+		{
+			if (ft_abs(g_d->enemy_y - i) + ft_abs(g_d->enemy_x - j) == 1)
+			{
+				if (g_d->map[i][j] != '1'
+					&& g_d->map[i][j] != 'C')
+					neighbours[k++] = (ft_abs(i - g_d->player_y)
+							+ ft_abs(j - g_d->player_x));
+				else
+					neighbours[k++] = g_d->rows + g_d->cols + 100;
+			}
+			j++;
+		}
+		i++;
+	}
+}
+
+static int	find_dir(t_game_data *g_d)
+{
 	int	min_path;
+	int	*neighbours;
+	int	i;
 	int	dir;
 
+	neighbours = (int *)malloc(sizeof(int) * 4);
+	fill_neighbours(g_d, neighbours);
 	i = 0;
 	dir = 0;
 	min_path = g_d->rows + g_d->cols + 100;
@@ -30,44 +61,23 @@ static int	find_dir(t_game_data *g_d, int *neighbours)
 		}
 		i++;
 	}
+	free(neighbours);
 	return (dir);
 }
 
 static t_point	choose_enemy_move(t_game_data *g_d)
 {
-	int	neighbours[4];
-	int	i;
 	int	dir;
 
-	//do smth with this mess
-	i = 0;
-	while (i < 4)
-		neighbours[i++] = g_d->rows + g_d->cols + 100;
-	if (g_d->map[g_d->enemy_y - 1][g_d->enemy_x] != '1'
-		&& g_d->map[g_d->enemy_y - 1][g_d->enemy_x] != 'C')
-		neighbours[0] = (ft_abs(g_d->enemy_y - 1 - g_d->player_y)
-				+ ft_abs(g_d->enemy_x - g_d->player_x));
-	if (g_d->map[g_d->enemy_y][g_d->enemy_x + 1] != '1'
-	&& g_d->map[g_d->enemy_y][g_d->enemy_x + 1] != 'C')
-		neighbours[1] = (ft_abs(g_d->enemy_y - g_d->player_y)
-				+ ft_abs(g_d->enemy_x + 1 - g_d->player_x));
-	if (g_d->map[g_d->enemy_y + 1][g_d->enemy_x] != '1'
-	&& g_d->map[g_d->enemy_y + 1][g_d->enemy_x] != 'C')
-		neighbours[2] = (ft_abs(g_d->enemy_y + 1 - g_d->player_y)
-				+ ft_abs(g_d->enemy_x - g_d->player_x));
-	if (g_d->map[g_d->enemy_y][g_d->enemy_x - 1] != '1'
-	&& g_d->map[g_d->enemy_y][g_d->enemy_x - 1] != 'C')
-		neighbours[3] = (ft_abs(g_d->enemy_y - g_d->player_y)
-				+ ft_abs(g_d->enemy_x - 1 - g_d->player_x));
-	dir = find_dir(g_d, neighbours);
+	dir = find_dir(g_d);
 	if (dir == 0)
 		return ((t_point){0, -1});
 	else if (dir == 1)
-		return ((t_point){1, 0});
-	else if (dir == 2)
-		return ((t_point){0, 1});
-	else
 		return ((t_point){-1, 0});
+	else if (dir == 2)
+		return ((t_point){1, 0});
+	else
+		return ((t_point){0, 1});
 }
 
 void	move_enemy(t_game_data *g_d)

@@ -43,10 +43,6 @@ typedef struct t_sprites
 	void	*enemy_1_left;
 	void	*enemy_2_left;
 	void	*key;
-	//void	*wall_left;
-	//void	*wall_right;
-	//void	*wall_top;
-	//void	*wall_botom;
 }	t_sprites;
 
 typedef struct s_game_data
@@ -73,7 +69,7 @@ typedef struct s_point
 {
 	int	x;
 	int	y;
-} t_point;
+}	t_point;
 
 // Utils
 void	init_structs(char *map_name, t_game_data *g_d, t_sprites *images);
@@ -99,7 +95,7 @@ int		die_hook(void *g_d);
 
 // init sprites
 void	init_sprites_1(t_game_data *g_d, t_sprites *images);
-void	init_sprites_2(t_game_data *g_d, t_sprites *images)
-void	init_sprites_3(t_game_data *g_d, t_sprites *images)
+void	init_sprites_2(t_game_data *g_d, t_sprites *images);
+void	init_sprites_3(t_game_data *g_d, t_sprites *images);
 
 #endif

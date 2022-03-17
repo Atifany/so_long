@@ -53,7 +53,8 @@ int	loop_hook(t_game_data *g_d)
 		else
 			g_d->anim = FALSE;
 		draw_tile(g_d, (t_point){g_d->player_x, g_d->player_y});
-		draw_tile(g_d, (t_point){g_d->enemy_x, g_d->enemy_y});
+		if (g_d->enemy_x != 0)
+			draw_tile(g_d, (t_point){g_d->enemy_x, g_d->enemy_y});
 	}
 	return (0);
 }

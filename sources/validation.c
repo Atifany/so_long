@@ -56,17 +56,18 @@ static void	check_dubs(t_game_data *g_d)
 		{
 			if (g_d->map[row][col] == 'P')
 				if (alphabet[0]++ != 0)
-					error_die(INVALID_MAP_DUPLICATE, RED, g_d);
+					error_die(INVALID_MAP, RED, g_d);
 			if (g_d->map[row][col] == 'E')
 				if (alphabet[1]++ != 0)
-					error_die(INVALID_MAP_DUPLICATE, RED, g_d);
-			if (g_d->map[row][col] == 'S')
+					error_die(INVALID_MAP, RED, g_d);
+			if (g_d->map[row][col++] == 'S')
 				if (alphabet[2]++ != 0)
-					error_die(INVALID_MAP_DUPLICATE, RED, g_d);
-			col++;
+					error_die(INVALID_MAP, RED, g_d);
 		}
 		row++;
 	}
+	if (alphabet[0] == 0 || alphabet[1] == 0)
+		error_die(INVALID_MAP, RED, g_d);
 }
 
 static void	check_symbols_and_len(t_game_data *g_d)
@@ -84,14 +85,14 @@ static void	check_symbols_and_len(t_game_data *g_d)
 		while (g_d->map[row][col])
 		{
 			if (!ft_strchr(alphabet, g_d->map[row][col]))
-				error_die(INVALID_MAP_SYMBOLS, RED, g_d);
+				error_die(INVALID_MAP, RED, g_d);
 			col++;
 		}
 		if (row == 0)
 			col_save = col;
 		else
 			if (col_save != col)
-				error_die(INVALID_MAP_LINES, RED, g_d);
+				error_die(INVALID_MAP, RED, g_d);
 		row++;
 	}
 	g_d->rows = row;
@@ -112,7 +113,7 @@ static void	check_if_closed_by_walls(t_game_data *g_d)
 			if ((row == 0 || row == g_d->rows - 1
 					|| col == 0 || col == g_d->cols - 1)
 				&& g_d->map[row][col] != '1')
-				error_die(INVALID_MAP_WALLS, RED, g_d);
+				error_die(INVALID_MAP, RED, g_d);
 			col++;
 		}
 		row++;
