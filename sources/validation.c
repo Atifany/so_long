@@ -12,7 +12,36 @@
 
 #include "../so_long.h"
 
-static void	check_dubs_and_count_collect(t_game_data *g_d)
+static void	count_collect_and_set_coord(t_game_data *g_d)
+{
+	int		row;
+	int		col;
+
+	row = 0;
+	while (g_d->map[row])
+	{
+		col = 0;
+		while (g_d->map[row][col])
+		{
+			if (g_d->map[row][col] == 'C')
+				g_d->collectibles++;
+			if (g_d->map[row][col] == 'P')
+			{
+				g_d->player_x = col;
+				g_d->player_y = row;
+			}
+			if (g_d->map[row][col] == 'S')
+			{
+				g_d->enemy_x = col;
+				g_d->enemy_y = row;
+			}
+			col++;
+		}
+		row++;
+	}
+}
+
+static void	check_dubs(t_game_data *g_d)
 {
 	char	alphabet[3];
 	int		row;
@@ -34,8 +63,6 @@ static void	check_dubs_and_count_collect(t_game_data *g_d)
 			if (g_d->map[row][col] == 'S')
 				if (alphabet[2]++ != 0)
 					error_die(INVALID_MAP_DUPLICATE, RED, g_d);
-			if (g_d->map[row][col] == 'C')
-				g_d->collectibles++;
 			col++;
 		}
 		row++;
@@ -86,16 +113,6 @@ static void	check_if_closed_by_walls(t_game_data *g_d)
 					|| col == 0 || col == g_d->cols - 1)
 				&& g_d->map[row][col] != '1')
 				error_die(INVALID_MAP_WALLS, RED, g_d);
-			if (g_d->map[row][col] == 'P')
-			{
-				g_d->player_x = col;
-				g_d->player_y = row;
-			}
-			if (g_d->map[row][col] == 'S')
-			{
-				g_d->enemy_x = col;
-				g_d->enemy_y = row;
-			}
 			col++;
 		}
 		row++;
@@ -105,6 +122,7 @@ static void	check_if_closed_by_walls(t_game_data *g_d)
 void	validate_map(t_game_data *g_d)
 {
 	check_symbols_and_len(g_d);
-	check_dubs_and_count_collect(g_d);
+	check_dubs(g_d);
 	check_if_closed_by_walls(g_d);
+	count_collect_and_set_coord(g_d);
 }

@@ -79,20 +79,27 @@ typedef struct s_point
 void	init_structs(char *map_name, t_game_data *g_d, t_sprites *images);
 void	error_die(char *error_code, char *color, t_game_data *g_d);
 void	validate_map(t_game_data *g_d);
+void	move_enemy(t_game_data *g_d);
+int		ft_abs(int n);
 
 // map_handle
 char	**get_map(char *filename, t_game_data *g_d);
 void	draw_tile(t_game_data *g_d, t_point p);
 void	draw_map(t_game_data *g_d);
 
-//map helpers
+// map helpers
 void	draw_map_helper_1(t_game_data *g_d, int x, int y);
 void	draw_map_helper_2(t_game_data *g_d, int x, int y);
 
-//hooks
+// hooks
 void	move(t_game_data *g_d, int shift_x, int shift_y);
 int		key_hook(int keycode, t_game_data *g_d);
 int		loop_hook(t_game_data *g_d);
 int		die_hook(void *g_d);
+
+// init sprites
+void	init_sprites_1(t_game_data *g_d, t_sprites *images);
+void	init_sprites_2(t_game_data *g_d, t_sprites *images)
+void	init_sprites_3(t_game_data *g_d, t_sprites *images)
 
 #endif

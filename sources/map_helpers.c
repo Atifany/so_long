@@ -18,21 +18,21 @@ static void	draw_map_helper_enemy(t_game_data *g_d, int x, int y)
 	{
 		if (g_d->enemy_is_facing_right == TRUE)
 			mlx_put_image_to_window(g_d->mlx, g_d->window,
-									g_d->images->enemy_1, x * g_d->img_width, y * g_d->img_height);
+				g_d->images->enemy_1, x * g_d->img_width, y * g_d->img_height);
 		else
 			mlx_put_image_to_window(g_d->mlx, g_d->window,
-									g_d->images->enemy_1_left, x * g_d->img_width,
-									y * g_d->img_height);
+				g_d->images->enemy_1_left, x * g_d->img_width,
+				y * g_d->img_height);
 	}
 	else
 	{
 		if (g_d->enemy_is_facing_right == TRUE)
 			mlx_put_image_to_window(g_d->mlx, g_d->window,
-									g_d->images->enemy_2, x * g_d->img_width, y * g_d->img_height);
+				g_d->images->enemy_2, x * g_d->img_width, y * g_d->img_height);
 		else
 			mlx_put_image_to_window(g_d->mlx, g_d->window,
-									g_d->images->enemy_2_left, x * g_d->img_width,
-									y * g_d->img_height);
+				g_d->images->enemy_2_left, x * g_d->img_width,
+				y * g_d->img_height);
 	}
 }
 
@@ -96,7 +96,7 @@ void	draw_map_helper_2(t_game_data *g_d, int x, int y)
 	else if (g_d->map[y][x] == 'S')
 	{
 		mlx_put_image_to_window(g_d->mlx, g_d->window,
-								g_d->images->empty, x * g_d->img_width, y * g_d->img_height);
+			g_d->images->empty, x * g_d->img_width, y * g_d->img_height);
 		draw_map_helper_enemy(g_d, x, y);
 	}
 }
